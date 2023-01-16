@@ -3,8 +3,7 @@ public class Distance {
     int y1;
     int x2;
     int y2;
-
-    double getDistance(String[] input) {
+    public double getDistance(String[] input) {
         Extraction extraction = new Extraction();
         x1 = extraction.getX(input[0]);
         y1 = extraction.getY(input[0]);

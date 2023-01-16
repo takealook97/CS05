@@ -10,7 +10,6 @@ public class Main {
         while (true) {
             System.out.print("> ");
             String[] input = br.readLine().split("-");
-            //-> 좌표 출력
             if (input.length <= 1) {//입력된 좌표의 길이가 1개 이하일경우
                 if(input[0].equals("close")){
                     System.out.println("---end---");
@@ -29,7 +28,7 @@ public class Main {
                 output.printFrame(input);
                 output.printRectangle();
                 System.out.printf("%,6f\n\n", new Rectangle().getSize(input));
-            } else {//input.length >= 5
+            } else {//input.length >= 5 (다각형)
                 output.printFrame(input);
                 output.printPolygon();
                 System.out.printf("%,6f\n\n", new Polygon().getSize(input));
