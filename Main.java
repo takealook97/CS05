@@ -10,12 +10,29 @@ public class Main {
         while (true) {
             System.out.print("> ");
             String[] input = br.readLine().split("-");
+            //-> 좌표 출력
             if (input.length <= 1) {//입력된 좌표의 길이가 1개 이하일경우
-                output.printFormError();
+                if(input[0].equals("close")){
+                    System.out.println("---end---");
+                    break;
+                }
+                else output.printFormError();
             } else if (input.length == 2) {
+                output.printFrame(input);
                 output.printDistance();
-                System.out.printf("%,6f",new Distance().getDistance(input));
-                System.out.println();
+                System.out.printf("%,6f\n\n", new Distance().getDistance(input));
+            } else if (input.length == 3) {
+                output.printFrame(input);
+                output.printTriangle();
+                System.out.printf("%,6f\n\n", new Triangle().getSize(input));
+            } else if (input.length == 4) {
+                output.printFrame(input);
+                output.printRectangle();
+                System.out.printf("%,6f\n\n", new Rectangle().getSize(input));
+            } else {//input.length >= 5
+                output.printFrame(input);
+                output.printPolygon();
+                System.out.printf("%,6f\n\n", new Polygon().getSize(input));
             }
         }
     }
