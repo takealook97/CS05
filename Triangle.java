@@ -3,7 +3,6 @@ public class Triangle {
     double distance2;
     double distance3;
 
-
     double getSize(String[] input) {
         distance1 = new Distance().getDistance(new String[]{input[0], input[1]});
         distance2 = new Distance().getDistance(new String[]{input[0], input[2]});
