@@ -319,3 +319,22 @@ public class Main {
 - Main 클래스는 입력과 출력을 받는 기능을 한다.
 - 입력은 StringBuilder를 통해 '-'를 기준으로 나뉘는 String 배열로 받는다.
 - 점의 개수가 1개 이하일 경우 에러 메세지를 출력하며 이외의 경우 해당하는 좌표와 넓이 등을 출력한다.
+---
+# 출력이미지
+### 입력
+![image](https://user-images.githubusercontent.com/118447769/212670650-9008d4c2-18e8-4664-b546-19ad3c339845.png)
+
+### 직선 길이 출력
+![image](https://user-images.githubusercontent.com/118447769/212670874-a88da5a8-a936-44c3-80ff-14f323f5a998.png)
+
+### 삼각형 넓이 출력
+![image](https://user-images.githubusercontent.com/118447769/212671092-8db229c0-0eea-467e-aced-1e8f77dc315a.png)
+
+### 사각형 넓이 출력
+![image](https://user-images.githubusercontent.com/118447769/212671266-ec65fd68-965c-4425-8948-344857768b90.png)
+
+### 다각형 넓이 출력
+![image](https://user-images.githubusercontent.com/118447769/212672021-c10d2a81-c444-4df5-918c-7f37fa6462bb.png)
+
+### 에러 출력
+![image](https://user-images.githubusercontent.com/118447769/212672269-0d75bca6-0220-4921-ac45-8150f0112130.png)
