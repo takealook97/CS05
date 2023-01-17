@@ -1,13 +1,14 @@
 public class Extraction {
+
     int getX(String input) {
-        String num = "";
+        StringBuilder num = new StringBuilder();
         for (int i = 1; i < input.length(); i++) {
             if (input.charAt(i) == ',') break;
             else {
-                num += input.charAt(i);
+                num.append(input.charAt(i));
             }
         }
-        return Integer.parseInt(num);
+        return Integer.parseInt(num.toString());
     }
 
     int getY(String input) {
@@ -18,13 +19,13 @@ public class Extraction {
                 break;
             }
         }
-        String num = "";
+        StringBuilder num = new StringBuilder();
         for (int i = startPoint + 1; i < input.length(); i++) {
             if (input.charAt(i) == ')') break;
             else {
-                num += input.charAt(i);
+                num.append(input.charAt(i));
             }
         }
-        return Integer.parseInt(num);
+        return Integer.parseInt(num.toString());
     }
 }

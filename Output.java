@@ -1,5 +1,5 @@
 public class Output {
-    void terms() {
+    void printTerms() {
         System.out.println("---------------------------------------------------");
         System.out.println("1. 좌표는 소괄호를 통해 입력합니다.");
         System.out.println("2. 각 좌표를 '-'로 이어서 입력합니다. ex) (a,b)-(c,d)");

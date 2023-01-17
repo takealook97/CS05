@@ -1,7 +1,8 @@
-public class Polygon {
+public class Polygon extends Shape {
     double sum1;
     double sum2;
 
+    @Override
     double getSize(String[] input) {//신발끈공식
         int[] arrX = new int[input.length + 1];
         int[] arrY = new int[input.length + 1];

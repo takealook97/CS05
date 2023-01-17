@@ -6,16 +6,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Output output = new Output();
-        output.terms();
+        output.printTerms();
         while (true) {
             System.out.print("> ");
             String[] input = br.readLine().split("-");
             if (input.length <= 1) {//입력된 좌표의 길이가 1개 이하일경우
-                if(input[0].equals("close")){
+                if (input[0].equals("close")) {
                     System.out.println("---end---");
                     break;
-                }
-                else output.printFormError();
+                } else output.printFormError();
             } else if (input.length == 2) {
                 output.printFrame(input);
                 output.printDistance();
