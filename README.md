@@ -44,34 +44,35 @@
 ### Extraction 클래스
 ```java
 public class Extraction {
-    int getX(String input) {
-        String num = "";
-        for (int i = 1; i < input.length(); i++) {
-            if (input.charAt(i) == ',') break;
-            else {
-                num += input.charAt(i);
-            }
-        }
-        return Integer.parseInt(num);
-    }
 
-    int getY(String input) {
-        int startPoint = 0;
-        for (int i = 0; i < input.length(); i++) {
-            if (input.charAt(i) == ',') {
-                startPoint = i;
-                break;
-            }
-        }
-        String num = "";
-        for (int i = startPoint + 1; i < input.length(); i++) {
-            if (input.charAt(i) == ')') break;
-            else {
-                num += input.charAt(i);
-            }
-        }
-        return Integer.parseInt(num);
+  int getX(String input) {
+    StringBuilder num = new StringBuilder();
+    for (int i = 1; i < input.length(); i++) {
+      if (input.charAt(i) == ',') break;
+      else {
+        num.append(input.charAt(i));
+      }
     }
+    return Integer.parseInt(num.toString());
+  }
+
+  int getY(String input) {
+    int startPoint = 0;
+    for (int i = 0; i < input.length(); i++) {
+      if (input.charAt(i) == ',') {
+        startPoint = i;
+        break;
+      }
+    }
+    StringBuilder num = new StringBuilder();
+    for (int i = startPoint + 1; i < input.length(); i++) {
+      if (input.charAt(i) == ')') break;
+      else {
+        num.append(input.charAt(i));
+      }
+    }
+    return Integer.parseInt(num.toString());
+  }
 }
 ```
 - 입력된 모든 좌표는 Extraction 클래스를 통해서 좌표값을 추출한다.
@@ -83,18 +84,18 @@ public class Extraction {
 ### Distance 클래스
 ```java
 public class Distance {
-    int x1;
-    int y1;
-    int x2;
-    int y2;
-    public double getDistance(String[] input) {
-        Extraction extraction = new Extraction();
-        x1 = extraction.getX(input[0]);
-        y1 = extraction.getY(input[0]);
-        x2 = extraction.getX(input[1]);
-        y2 = extraction.getY(input[1]);
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    }
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+  public double getDistance(String[] input) {
+    Extraction extraction = new Extraction();
+    x1 = extraction.getX(input[0]);
+    y1 = extraction.getY(input[0]);
+    x2 = extraction.getX(input[1]);
+    y2 = extraction.getY(input[1]);
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+  }
 }
 ```
 - Extraction 클래스를 통해 입력받은 두 점의 좌표를 필드 x1,y1,x2,y2에 넣는다.
@@ -104,18 +105,20 @@ public class Distance {
 # Mission 2. 삼각형 넓이
 ### Triangle 클래스
 ```java
-public class Triangle {
-    double distance1;
-    double distance2;
-    double distance3;
+public class Triangle extends Shape {
+  double distance1;
+  double distance2;
+  double distance3;
 
-    double getSize(String[] input) {//헤론의 공식
-        distance1 = new Distance().getDistance(new String[]{input[0], input[1]});
-        distance2 = new Distance().getDistance(new String[]{input[0], input[2]});
-        distance3 = new Distance().getDistance(new String[]{input[1], input[2]});
-        double s = (distance1 + distance2 + distance3) / 2;
-        return Math.sqrt(s * (s - distance1) * (s - distance2) * (s - distance3));
-    }
+  @Override
+  double getSize(String[] input) {//헤론의 공식
+    Distance distance = new Distance();
+    distance1 = distance.getDistance(new String[]{input[0], input[1]});
+    distance2 = distance.getDistance(new String[]{input[0], input[2]});
+    distance3 = distance.getDistance(new String[]{input[1], input[2]});
+    double s = (distance1 + distance2 + distance3) / 2;
+    return Math.sqrt(s * (s - distance1) * (s - distance2) * (s - distance3));
+  }
 }
 ```
 - 삼각형의 넓이는 밑변x높이 공식으로 구해도 무방하나 높이에 해당하는 점과 직선사이의 거리를 구하기는 번거롭다.
@@ -130,20 +133,22 @@ public class Triangle {
 ```java
 import java.util.Arrays;
 
-public class Rectangle {//직사각형만 허용
-    double width;
-    double height;
+public class Rectangle extends Shape{//직사각형만 허용
+  double width;
+  double height;
 
-    double getSize(String[] input) {
-        double[] length = new double[3];
-        length[0] = new Distance().getDistance(new String[]{input[0], input[1]});
-        length[1] = new Distance().getDistance(new String[]{input[0], input[2]});
-        length[2] = new Distance().getDistance(new String[]{input[0], input[3]});
-        Arrays.sort(length);
-        width = length[0];
-        height = length[1];
-        return width * height;
-    }
+  @Override
+  double getSize(String[] input) {
+    Distance distance = new Distance();
+    double[] length = new double[3];
+    length[0] = distance.getDistance(new String[]{input[0], input[1]});
+    length[1] = distance.getDistance(new String[]{input[0], input[2]});
+    length[2] = distance.getDistance(new String[]{input[0], input[3]});
+    Arrays.sort(length);
+    width = length[0];
+    height = length[1];
+    return width * height;
+  }
 }
 ```
 - 문제에서 주어진 사각형의 조건은 직사각형 뿐이므로 가로x세로 공식을 통해 값을 구한다.
@@ -156,25 +161,26 @@ public class Rectangle {//직사각형만 허용
 # Mission 4. 다각형 넓이
 ### Polygon 클래스
 ```java
-public class Polygon {
-    double sum1;
-    double sum2;
+public class Polygon extends Shape {
+  double sum1;
+  double sum2;
 
-    double getSize(String[] input) {//신발끈공식
-        int[] arrX = new int[input.length + 1];
-        int[] arrY = new int[input.length + 1];
-        for (int i = 0; i < input.length; i++) {
-            arrX[i] = new Extraction().getX(input[i]);
-            arrY[i] = new Extraction().getY(input[i]);
-        }
-        arrX[input.length] = arrX[0];
-        arrY[input.length] = arrY[0];
-        for (int i = 0; i < input.length; i++) {
-            sum1 += (arrX[i] * arrY[i + 1]);
-            sum2 += (arrX[i + 1] * arrY[i]);
-        }
-        return Math.abs((sum1 - sum2) / 2);
+  @Override
+  double getSize(String[] input) {//신발끈공식
+    int[] arrX = new int[input.length + 1];
+    int[] arrY = new int[input.length + 1];
+    for (int i = 0; i < input.length; i++) {
+      arrX[i] = new Extraction().getX(input[i]);
+      arrY[i] = new Extraction().getY(input[i]);
     }
+    arrX[input.length] = arrX[0];
+    arrY[input.length] = arrY[0];
+    for (int i = 0; i < input.length; i++) {
+      sum1 += (arrX[i] * arrY[i + 1]);
+      sum2 += (arrX[i + 1] * arrY[i]);
+    }
+    return Math.abs((sum1 - sum2) / 2);
+  }
 }
 ```
 - 다각형의 경우 찌그러진 경우는 고려하지 않았다.
@@ -189,84 +195,84 @@ public class Polygon {
 ### Output 클래스
 ```java
 public class Output {
-    void terms() {
-        System.out.println("---------------------------------------------------");
-        System.out.println("1. 좌표는 소괄호를 통해 입력합니다.");
-        System.out.println("2. 각 좌표를 '-'로 이어서 입력합니다. ex) (a,b)-(c,d)");
-        System.out.println("3. 좌표의 개수는 2개 이상입니다.");
-        System.out.println("4. 좌표가 3개 이상일 경우 도형을 그리는 순서대로 좌표를 입력하세요.");
-        System.out.println("5. 좌표의 범위 0 <= x ,y <= 24");
-        System.out.println("---------------------------------------------------");
-        System.out.println("좌표를 입력하세요.");
+  void printTerms() {
+    System.out.println("---------------------------------------------------");
+    System.out.println("1. 좌표는 소괄호를 통해 입력합니다.");
+    System.out.println("2. 각 좌표를 '-'로 이어서 입력합니다. ex) (a,b)-(c,d)");
+    System.out.println("3. 좌표의 개수는 2개 이상입니다.");
+    System.out.println("4. 좌표가 3개 이상일 경우 도형을 그리는 순서대로 좌표를 입력하세요.");
+    System.out.println("5. 좌표의 범위 0 <= x ,y <= 24");
+    System.out.println("---------------------------------------------------");
+    System.out.println("좌표를 입력하세요.");
+  }
+
+  void printFrame(String[] input) {
+    int[] arrX = new int[input.length];
+    int[] arrY = new int[input.length];
+    for (int i = 0; i < input.length; i++) {
+      arrX[i] = new Extraction().getX(input[i]);
+      arrY[i] = new Extraction().getY(input[i]);
     }
 
-    void printFrame(String[] input) {
-        int[] arrX = new int[input.length];
-        int[] arrY = new int[input.length];
-        for (int i = 0; i < input.length; i++) {
-            arrX[i] = new Extraction().getX(input[i]);
-            arrY[i] = new Extraction().getY(input[i]);
-        }
+    String[] coordinate = new String[27];
+    coordinate[0] = "  X";
+    coordinate[1] = "24|                                                 ";// ' ' = 49
+    coordinate[2] = "  |                                                 ";
+    coordinate[3] = "22|                                                 ";
+    coordinate[4] = "  |                                                 ";
+    coordinate[5] = "20|                                                 ";
+    coordinate[6] = "  |                                                 ";
+    coordinate[7] = "18|                                                 ";
+    coordinate[8] = "  |                                                 ";
+    coordinate[9] = "16|                                                 ";
+    coordinate[10] = "  |                                                 ";
+    coordinate[11] = "14|                                                 ";
+    coordinate[12] = "  |                                                 ";
+    coordinate[13] = "12|                                                 ";
+    coordinate[14] = "  |                                                 ";
+    coordinate[15] = "10|                                                 ";
+    coordinate[16] = "  |                                                 ";
+    coordinate[17] = " 8|                                                 ";
+    coordinate[18] = "  |                                                 ";
+    coordinate[19] = " 6|                                                 ";
+    coordinate[20] = "  |                                                 ";
+    coordinate[21] = " 4|                                                 ";
+    coordinate[22] = "  |                                                 ";
+    coordinate[23] = " 2|                                                 ";
+    coordinate[24] = "  |                                                 ";
+    coordinate[25] = "  +―――――――――――――――――――――――――――――――――――――――――――――――――― Y";
+    coordinate[26] = "  0   2   4   6   8   10  12  14  16  18  20  22  24";
 
-        String[] coordinate = new String[27];
-        coordinate[0] = "  X";
-        coordinate[1] = "24|                                                 ";// ' ' = 49
-        coordinate[2] = "  |                                                 ";
-        coordinate[3] = "22|                                                 ";
-        coordinate[4] = "  |                                                 ";
-        coordinate[5] = "20|                                                 ";
-        coordinate[6] = "  |                                                 ";
-        coordinate[7] = "18|                                                 ";
-        coordinate[8] = "  |                                                 ";
-        coordinate[9] = "16|                                                 ";
-        coordinate[10] = "  |                                                 ";
-        coordinate[11] = "14|                                                 ";
-        coordinate[12] = "  |                                                 ";
-        coordinate[13] = "12|                                                 ";
-        coordinate[14] = "  |                                                 ";
-        coordinate[15] = "10|                                                 ";
-        coordinate[16] = "  |                                                 ";
-        coordinate[17] = " 8|                                                 ";
-        coordinate[18] = "  |                                                 ";
-        coordinate[19] = " 6|                                                 ";
-        coordinate[20] = "  |                                                 ";
-        coordinate[21] = " 4|                                                 ";
-        coordinate[22] = "  |                                                 ";
-        coordinate[23] = " 2|                                                 ";
-        coordinate[24] = "  |                                                 ";
-        coordinate[25] = "  +―――――――――――――――――――――――――――――――――――――――――――――――――― Y";
-        coordinate[26] = "  0   2   4   6   8   10  12  14  16  18  20  22  24";
-
-        for (int i = 0; i < input.length; i++) {
-            StringBuilder sb = new StringBuilder(coordinate[25 - arrY[i]]);
-            sb.setCharAt(3 + 2 * arrX[i], '·');
-            coordinate[25 - arrY[i]] = sb.toString();
-        }
-        for(int i = 0; i < 27; i++){
-            System.out.println(coordinate[i]);
-        }
-        System.out.println();
+    for (int i = 0; i < input.length; i++) {
+      StringBuilder sb = new StringBuilder(coordinate[25 - arrY[i]]);
+      sb.setCharAt(3 + 2 * arrX[i], '·');
+      coordinate[25 - arrY[i]] = sb.toString();
     }
-
-    void printDistance() {
-        System.out.print("∴ 두 점 사이의 거리는 ");
+    for(int i = 0; i < 27; i++){
+      System.out.println(coordinate[i]);
     }
+    System.out.println();
+  }
 
-    void printTriangle() {
-        System.out.print("∴ 삼각형의 넓이는 ");
-    }
+  void printDistance() {
+    System.out.print("∴ 두 점 사이의 거리는 ");
+  }
 
-    void printRectangle() {
-        System.out.print("∴ 사각형의 넓이는 ");
-    }
+  void printTriangle() {
+    System.out.print("∴ 삼각형의 넓이는 ");
+  }
 
-    void printPolygon() {
-        System.out.print("∴ 다각형의 넓이는 ");
-    }
+  void printRectangle() {
+    System.out.print("∴ 사각형의 넓이는 ");
+  }
 
-    void printFormError() {
-        System.out.println("※ 잘못된 형식입니다. 다시 입력하세요.");
-    }
+  void printPolygon() {
+    System.out.print("∴ 다각형의 넓이는 ");
+  }
+
+  void printFormError() {
+    System.out.println("※ 잘못된 형식입니다. 다시 입력하세요.");
+  }
 }
 ```
 - Output 클래스에는 출력과 관련한 메서드들이 포함되어 있다.
@@ -276,44 +282,44 @@ public class Output {
 - 이외의 메서드들은 입력에 따라 Main 클래스에 적절히 배치했다.
 
 ### Main 클래스
+
 ```java
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Output output = new Output();
-        output.terms();
-        while (true) {
-            System.out.print("> ");
-            String[] input = br.readLine().split("-");
-            if (input.length <= 1) {//입력된 좌표의 길이가 1개 이하일경우
-                if(input[0].equals("close")){
-                    System.out.println("---end---");
-                    break;
-                }
-                else output.printFormError();
-            } else if (input.length == 2) {
-                output.printFrame(input);
-                output.printDistance();
-                System.out.printf("%,6f\n\n", new Distance().getDistance(input));
-            } else if (input.length == 3) {
-                output.printFrame(input);
-                output.printTriangle();
-                System.out.printf("%,6f\n\n", new Triangle().getSize(input));
-            } else if (input.length == 4) {
-                output.printFrame(input);
-                output.printRectangle();
-                System.out.printf("%,6f\n\n", new Rectangle().getSize(input));
-            } else {//input.length >= 5 (다각형)
-                output.printFrame(input);
-                output.printPolygon();
-                System.out.printf("%,6f\n\n", new Polygon().getSize(input));
-            }
-        }
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    Output output = new Output();
+    output.printTerms();
+    while (true) {
+      System.out.print("> ");
+      String[] input = br.readLine().split("-");
+      if (input.length <= 1) {//입력된 좌표의 길이가 1개 이하일경우
+        if (input[0].equals("close")) {
+          System.out.println("---end---");
+          break;
+        } else output.printFormError();
+      } else if (input.length == 2) {
+        output.printFrame(input);
+        output.printDistance();
+        System.out.printf("%,6f\n\n", new Distance().getDistance(input));
+      } else if (input.length == 3) {
+        output.printFrame(input);
+        output.printTriangle();
+        System.out.printf("%,6f\n\n", new Triangle().getSize(input));
+      } else if (input.length == 4) {
+        output.printFrame(input);
+        output.printRectangle();
+        System.out.printf("%,6f\n\n", new Rectangle().getSize(input));
+      } else {//input.length >= 5 (다각형)
+        output.printFrame(input);
+        output.printPolygon();
+        System.out.printf("%,6f\n\n", new Polygon().getSize(input));
+      }
     }
+  }
 }
 ```
 - Main 클래스는 입력과 출력을 받는 기능을 한다.
